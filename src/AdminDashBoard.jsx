@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Box, Grid, Paper, Typography, Container, 
-    CircularProgress, Card, CardContent, Avatar, Alert, Stack, Fade
+    CircularProgress, Card, CardContent, Avatar, Alert, Stack, Fade, useMediaQuery, useTheme 
 } from '@mui/material';
 import { 
     PeopleAltOutlined, AutoStoriesOutlined, ForumOutlined, 
@@ -23,7 +23,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             <Box className="custom-chart-tooltip">
                 <Typography className="tooltip-label">{label}</Typography>
                 <Typography className="tooltip-value">
-                    <span>Learners:</span> {payload[0].value}
+                    <span>Learners:</span> {payload[0].value.toLocaleString()}
                 </Typography>
             </Box>
         );
@@ -32,6 +32,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 function AdminDashBoard() {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+    
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -54,7 +58,7 @@ function AdminDashBoard() {
                     );
                 }, 100);
             } catch (err) {
-                setError("Real-time synchronization failed. Displaying cached data.");
+                setError("Real-time synchronization failed. Using offline data.");
             } finally {
                 setLoading(false);
             }
@@ -89,16 +93,16 @@ function AdminDashBoard() {
                             Platform <span className="text-indigo">Intelligence</span>
                         </Typography>
                         <Typography variant="body1" className="admin-dash-subtitle">
-                            Monitor user growth, engagement, and language metrics in real-time.
+                            Monitor user growth and engagement metrics across the ecosystem.
                         </Typography>
                     </Box>
                 </Box>
 
                 {error && <Fade in><Alert severity="warning" sx={{ mb: 4, borderRadius: '12px' }}>{error}</Alert></Fade>}
 
-                <Grid container spacing={12} sx={{ mb: 4 , mt: 3 }}>
+                <Grid container spacing={23} sx={{ mb: 4 }} >
                     {kpiCards.map((stat, i) => (
-                        <Grid item xs={12} md={4} key={i}>
+                        <Grid item xs={12} sm={6} md={4} key={i}>
                             <Card className="admin-dash-kpi">
                                 <CardContent className="admin-dash-kpi-content">
                                     <Avatar sx={{ bgcolor: `${stat.color}15`, color: stat.color }} className="admin-dash-avatar">
@@ -117,8 +121,8 @@ function AdminDashBoard() {
                     ))}
                 </Grid>
 
-                <Grid container spacing={4}>
-                    <Grid item xs={12} lg={7} width={540}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} lg={7}>
                         <Paper className="admin-dash-chart-box" elevation={0}>
                             <Box className="admin-dash-chart-header">
                                 <Stack direction="row" spacing={1} alignItems="center">
@@ -127,7 +131,7 @@ function AdminDashBoard() {
                                 </Stack>
                             </Box>
                             <Box className="admin-dash-chart-wrapper">
-                                <ResponsiveContainer width="100%" height={400}>
+                                <ResponsiveContainer width={500} height={isMobile ? 250 : 400}>
                                     <AreaChart data={data?.growthData || []}>
                                         <defs>
                                             <linearGradient id="growthGradient" x1="0" y1="0" x2="0" y2="1">
@@ -140,13 +144,13 @@ function AdminDashBoard() {
                                             dataKey="month" 
                                             axisLine={false} 
                                             tickLine={false} 
-                                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                                            tick={{fill: '#94a3b8', fontSize: 11}} 
                                             dy={10} 
                                         />
                                         <YAxis 
                                             axisLine={false} 
                                             tickLine={false} 
-                                            tick={{fill: '#94a3b8', fontSize: 12}} 
+                                            tick={{fill: '#94a3b8', fontSize: 11}} 
                                         />
                                         <Tooltip content={<CustomTooltip />} />
                                         <Area 
@@ -164,7 +168,7 @@ function AdminDashBoard() {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={12} lg={5} width={540}>
+                    <Grid item xs={12} lg={5}>
                         <Paper className="admin-dash-chart-box" elevation={0}>
                             <Box className="admin-dash-chart-header">
                                 <Stack direction="row" spacing={1} alignItems="center">
@@ -173,13 +177,13 @@ function AdminDashBoard() {
                                 </Stack>
                             </Box>
                             <Box className="admin-dash-pie-wrapper">
-                                <ResponsiveContainer width="100%" height={400}>
+                                <ResponsiveContainer width={500} height={isMobile ? 300 : 350}>
                                     <PieChart>
                                         <Pie
                                             data={data?.languageData || []}
-                                            innerRadius={80}
-                                            outerRadius={140}
-                                            paddingAngle={10}
+                                            innerRadius={isMobile ? 60 : 80}
+                                            outerRadius={isMobile ? 90 : 130}
+                                            paddingAngle={8}
                                             dataKey="value"
                                             stroke="none"
                                         >
@@ -194,14 +198,14 @@ function AdminDashBoard() {
                                     </PieChart>
                                 </ResponsiveContainer>
                                 
-                                <Grid container spacing={2} className="admin-dash-pie-legend-grid">
+                                <Grid container spacing={1.5} sx={{ mt: 2 }}>
                                     {(data?.languageData || []).map((entry, i) => (
-                                        <Grid item xs={6} key={i}>
+                                        <Grid item xs={6} sm={4} lg={6} key={i}>
                                             <Box className="legend-item-v2">
                                                 <div className="legend-color-bar" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }}></div>
                                                 <Box>
                                                     <Typography className="legend-name">{entry.name}</Typography>
-                                                    <Typography className="legend-val">{entry.value} users</Typography>
+                                                    <Typography className="legend-val">{entry.value} learners</Typography>
                                                 </Box>
                                             </Box>
                                         </Grid>
