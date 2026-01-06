@@ -1,16 +1,36 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import LayOut from './LayOut';
 // import AdminDashboard from './pages/AdminDashboard';
+
+
 import AdminAddTutorial from './AdminAddTutorial';
 import AdminLogin from './AdminLogin';
 import ViewTutorial from './ViewTutorial';
 import AdminUpdateTutorial from './AdminUpdateTutorial';
 import ViewUsers from './ViewUsers';
 import AdminDashBoard from './AdminDashBoard';
+import React from 'react';
 
+const NavigationHandler = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    const unblock = window.addEventListener('popstate', () => {
+      navigate(location.pathname, { replace: true });
+    });
+
+    return () => {
+      window.removeEventListener('popstate', unblock);
+    };
+  }, [navigate, location]);
+
+  return null;
+};
 function App() {
   return (
     <Router>
+      <NavigationHandler />
       <Routes>
         <Route path="/" element={<AdminLogin />} />
 
