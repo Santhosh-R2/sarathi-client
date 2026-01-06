@@ -1,0 +1,187 @@
+/* Container and Layout */
+.admin-update-tutorials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+.admin-update-tutorials-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.admin-update-tutorials-title {
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+}
+
+.admin-update-tutorials-gradient-text {
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Cards with Visible Borders */
+.admin-update-tutorials-config-card {
+    padding: 24px;
+    border-radius: 16px;
+    background: var(--mui-palette-background-paper);
+    border: 1px solid #cbd5e1 !important; /* Visible Border */
+}
+
+.admin-update-tutorials-info-card {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px dashed #6366f1 !important;
+}
+
+.admin-update-tutorials-card-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Inputs */
+.admin-update-tutorials-input-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--mui-palette-text-primary);
+}
+
+.admin-update-tutorials-modern-input .MuiOutlinedInput-root {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.02);
+    transition: all 0.2s;
+}
+
+.admin-update-tutorials-modern-input .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* Workflow Builder */
+.admin-update-tutorials-step-badge {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.admin-update-tutorials-step-item {
+    display: flex;
+    gap: 20px;
+}
+
+.admin-update-tutorials-step-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.admin-update-tutorials-step-marker {
+    width: 32px;
+    height: 32px;
+    background: #6366f1;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    z-index: 2;
+}
+
+.admin-update-tutorials-step-line {
+    width: 2px;
+    flex-grow: 1;
+    background: #cbd5e1;
+    margin: 4px 0;
+}
+
+.admin-update-tutorials-step-card {
+    flex-grow: 1;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1 !important; /* Visible Border */
+    transition: all 0.2s;
+}
+
+.admin-update-tutorials-step-card:hover {
+    border-color: #6366f1 !important;
+    background: var(--mui-palette-background-paper);
+}
+
+.admin-update-tutorials-step-input {
+    font-size: 0.95rem !important;
+    font-weight: 500;
+}
+
+.admin-update-tutorials-drag-icon {
+    color: #cbd5e1;
+    cursor: grab;
+    margin-top: 4px;
+}
+
+.admin-update-tutorials-delete-icon {
+    color: #94a3b8;
+    transition: all 0.2s;
+}
+
+.admin-update-tutorials-delete-icon:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Buttons */
+.admin-update-tutorials-save-btn {
+    background: #0f172a !important;
+    padding: 10px 24px !important;
+    border-radius: 12px !important;
+    text-transform: none !important;
+    font-weight: 700 !important;
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3) !important;
+}
+
+.admin-update-tutorials-add-btn {
+    border: 2px dashed #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    color: #64748b !important;
+    transition: all 0.2s !important;
+}
+
+.admin-update-tutorials-add-btn:hover {
+    background: rgba(99, 102, 241, 0.05) !important;
+    border-color: #6366f1 !important;
+    color: #6366f1 !important;
+}
+
+/* Dark Mode Visibility Fixes */
+[data-theme='dark'] .admin-update-tutorials-config-card,
+[data-theme='dark'] .admin-update-tutorials-step-card,
+[data-theme='dark'] .admin-update-tutorials-modern-input .MuiOutlinedInput-notchedOutline {
+    border-color: #334155 !important;
+}
+
+[data-theme='dark'] .admin-update-tutorials-step-line {
+    background: #334155;
+}
+
+[data-theme='dark'] .admin-update-tutorials-add-btn {
+    border-color: #334155 !important;
+}

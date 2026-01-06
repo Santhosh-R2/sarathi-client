@@ -1,0 +1,164 @@
+/* --- Root Layout --- */
+.admin-users-viewport {
+    padding-bottom: 60px;
+}
+
+.admin-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.admin-users-icon-square {
+    width: 28px;
+    height: 28px;
+    background: rgba(99, 102, 241, 0.15);
+    color: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.admin-users-overline {
+    font-weight: 800 !important;
+    color: #6366f1 !important;
+    letter-spacing: 1.2px !important;
+}
+
+.admin-users-title {
+    font-weight: 900 !important;
+    letter-spacing: -1.5px !important;
+    color: var(--mui-palette-text-primary);
+}
+
+.admin-users-indigo { color: #6366f1; }
+
+/* --- Stats Box --- */
+.admin-users-stats {
+    text-align: right;
+    padding: 15px 25px;
+    border-radius: 16px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+}
+
+[data-theme='dark'] .admin-users-stats {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+/* --- Table Container --- */
+.admin-users-table-paper {
+    border-radius: 20px !important;
+    overflow: hidden;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+}
+
+[data-theme='dark'] .admin-users-table-paper {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+/* --- Table Head --- */
+.admin-users-table-head {
+    background: #f8fafc !important;
+}
+
+[data-theme='dark'] .admin-users-table-head {
+    background: #1e293b !important;
+}
+
+.admin-users-h-cell {
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    font-size: 11px !important;
+    letter-spacing: 0.5px !important;
+    color: #475569 !important;
+    padding: 20px !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+}
+
+[data-theme='dark'] .admin-users-h-cell {
+    color: #94a3b8 !important;
+    border-bottom-color: #475569 !important;
+}
+
+/* --- Table Row & Data Text --- */
+.admin-users-row { transition: background-color 0.2s; }
+
+.admin-users-name {
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #1e293b;
+}
+
+[data-theme='dark'] .admin-users-name {
+    color: #ffffff !important;
+}
+
+.admin-users-id-text { color: #64748b !important; }
+[data-theme='dark'] .admin-users-id-text { color: #94a3b8 !important; }
+
+.admin-users-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+[data-theme='dark'] .admin-users-contact-item {
+    color: #cbd5e1 !important;
+}
+
+.muted-text { opacity: 0.7; }
+
+/* Literacy Level Visibility */
+.literacy-cell {
+    display: flex;
+    align-items: center;
+}
+
+.admin-users-date-text { color: #64748b; }
+[data-theme='dark'] .admin-users-date-text { color: #94a3b8; }
+
+/* --- Manage Buttons Fix --- */
+.admin-users-action-btn {
+    border-radius: 10px !important;
+    padding: 8px !important;
+}
+
+/* Edit/Settings Button */
+.admin-users-action-btn.view {
+    background: rgba(99, 102, 241, 0.1) !important;
+    color: #6366f1 !important;
+}
+.admin-users-action-btn.view:hover {
+    background: #6366f1 !important;
+    color: white !important;
+}
+
+/* Delete Button */
+.admin-users-action-btn.delete {
+    background: rgba(244, 63, 94, 0.1) !important;
+    color: #f43f5e !important;
+}
+.admin-users-action-btn.delete:hover {
+    background: #f43f5e !important;
+    color: white !important;
+}
+
+/* Loader */
+.admin-users-loader {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
