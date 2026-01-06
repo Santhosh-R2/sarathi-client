@@ -25,9 +25,8 @@ function ViewTutorial() {
     const [error, setError] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // Modal States
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [deleteTarget, setDeleteTarget] = useState(null); // Stores { id, title }
+    const [deleteTarget, setDeleteTarget] = useState(null); 
     const [isDeleting, setIsDeleting] = useState(false);
     
     const navigate = useNavigate();
@@ -57,13 +56,11 @@ function ViewTutorial() {
         }, 100);
     };
 
-    // Step 1: Open Dialog
     const handleDeleteClick = (id, title) => {
         setDeleteTarget({ id, title });
         setOpenDeleteDialog(true);
     };
 
-    // Step 2: Confirm API Call
     const handleConfirmDelete = async () => {
         if (!deleteTarget) return;
         setIsDeleting(true);
@@ -79,7 +76,6 @@ function ViewTutorial() {
         }
     };
 
-    // Filter Logic
     const filteredTutorials = tutorials.filter(t => {
         const matchesSearch = t.title.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === 'All' || t.category === selectedCategory;
@@ -104,7 +100,6 @@ function ViewTutorial() {
         <Box className="vt-admin-viewport">
             <Container maxWidth="xl">
                 
-                {/* --- HEADER --- */}
                 <Box className="vt-admin-header">
                     <Box>
                         <Typography variant="overline" className="vt-admin-overline">
@@ -125,7 +120,6 @@ function ViewTutorial() {
                     </Button>
                 </Box>
 
-                {/* --- CONTROLS --- */}
                 <Paper className="vt-admin-controls" elevation={0}>
                     <Box className="vt-search-wrapper">
                         <Search sx={{ color: 'text.secondary', mr: 1.5 }} />
@@ -171,7 +165,6 @@ function ViewTutorial() {
                     </Menu>
                 </Paper>
 
-                {/* --- GRID --- */}
                 {filteredTutorials.length > 0 ? (
                     <Grid container spacing={3}>
                         {filteredTutorials.map((tut) => (
@@ -227,7 +220,6 @@ function ViewTutorial() {
                 )}
             </Container>
 
-            {/* --- DELETE CONFIRMATION DIALOG --- */}
             <Dialog
                 open={openDeleteDialog}
                 onClose={() => !isDeleting && setOpenDeleteDialog(false)}

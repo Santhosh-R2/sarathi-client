@@ -58,7 +58,7 @@ function AdminLogin() {
             const res = await axiosInstance.post('users/admin-login', formData);
             if (res.data.isAdmin) {
                 localStorage.setItem('sarathiAdmin', JSON.stringify(res.data));
-                navigate('/admin-add-tutorial');
+                navigate('/admin-dashboard');
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Unauthorized access detected');
@@ -70,13 +70,10 @@ function AdminLogin() {
 
     return (
         <Box className="login-admin-viewport">
-            {/* Minimal Decorative Elements */}
             <div className="login-admin-accent-glow"></div>
 
             <Box className="login-admin-main-card" ref={containerRef}>
-                
-                {/* --- LEFT PANEL: IDENTITY --- */}
-                <Box className="login-admin-sidebar" ref={leftPanelRef}>
+                                <Box className="login-admin-sidebar" ref={leftPanelRef}>
                     <div className="login-admin-mesh-bg"></div>
                     <Box className="login-admin-sidebar-content">
                         <Box className="login-admin-logo-row">
@@ -105,7 +102,6 @@ function AdminLogin() {
                     </Box>
                 </Box>
 
-                {/* --- RIGHT PANEL: AUTHENTICATION --- */}
                 <Box className="login-admin-form-section" ref={rightPanelRef}>
                     <Box className="login-admin-form-box">
                         <div ref={el => formItems.current[0] = el}>

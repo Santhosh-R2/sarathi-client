@@ -92,7 +92,6 @@ function AdminUpdateTutorial() {
 
     return (
         <Box ref={containerRef} className="admin-update-tutorials-container">
-            {/* Header Section */}
             <Box className="admin-update-tutorials-header">
                 <Box>
                     <Button 
@@ -128,7 +127,6 @@ function AdminUpdateTutorial() {
             )}
 
             <Grid container spacing={4} >
-                {/* Left Side: Settings */}
                 <Grid item xs={12} md={4} width={550}>
                     <Stack spacing={3}>
                         <Paper className="admin-update-tutorials-config-card" elevation={0}>
@@ -186,7 +184,6 @@ function AdminUpdateTutorial() {
                     </Stack>
                 </Grid>
 
-                {/* Right Side: Step Builder */}
                 <Grid item xs={12} md={8} width={500}>
                     <Box className="admin-update-tutorials-builder-area">
                         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

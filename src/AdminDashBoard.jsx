@@ -17,7 +17,6 @@ import './AdminDashBoard.css';
 
 const CHART_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
-// Custom Tooltip for the Growth Chart
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
@@ -80,7 +79,6 @@ function AdminDashBoard() {
         <Box className="admin-dash-viewport">
             <Container maxWidth="xl">
                 
-                {/* --- HEADER --- */}
                 <Box className="admin-dash-header">
                     <Box>
                         <Box className="admin-dash-badge">
@@ -98,7 +96,6 @@ function AdminDashBoard() {
 
                 {error && <Fade in><Alert severity="warning" sx={{ mb: 4, borderRadius: '12px' }}>{error}</Alert></Fade>}
 
-                {/* --- KPI SECTION (Spacing fixed to 3 for pro look) --- */}
                 <Grid container spacing={12} sx={{ mb: 4 , mt: 3 }}>
                     {kpiCards.map((stat, i) => (
                         <Grid item xs={12} md={4} key={i}>
@@ -121,7 +118,6 @@ function AdminDashBoard() {
                 </Grid>
 
                 <Grid container spacing={4}>
-                    {/* --- GROWTH AREA CHART --- */}
                     <Grid item xs={12} lg={7} width={540}>
                         <Paper className="admin-dash-chart-box" elevation={0}>
                             <Box className="admin-dash-chart-header">
@@ -168,7 +164,6 @@ function AdminDashBoard() {
                         </Paper>
                     </Grid>
 
-                    {/* --- LARGE LANGUAGE PIE CHART --- */}
                     <Grid item xs={12} lg={5} width={540}>
                         <Paper className="admin-dash-chart-box" elevation={0}>
                             <Box className="admin-dash-chart-header">

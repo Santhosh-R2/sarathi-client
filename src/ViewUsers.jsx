@@ -47,7 +47,6 @@ function ViewUsers() {
 
     const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-GB');
 
-    // Helper to style Literacy Level
     const getLiteracyStyle = (level) => {
         if (level?.includes('Senior')) return { color: '#f59e0b', label: 'Senior Mode' };
         if (level?.includes('Beginner')) return { color: '#10b981', label: 'Beginner' };

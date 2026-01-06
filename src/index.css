@@ -1,4 +1,3 @@
-/* Hide scrollbar for Suggestion Chips */
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
 }

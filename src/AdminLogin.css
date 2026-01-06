@@ -19,7 +19,6 @@
     overflow: hidden;
 }
 
-/* Background Glow */
 .login-admin-accent-glow {
     position: absolute;
     width: 800px;
@@ -30,7 +29,6 @@
     z-index: 0;
 }
 
-/* Main Card Container */
 .login-admin-main-card {
     display: flex;
     width: 1100px;
@@ -43,7 +41,6 @@
     border: 1px solid var(--login-admin-border);
 }
 
-/* Sidebar Styling (Left) */
 .login-admin-sidebar {
     flex: 1.2;
     background: var(--login-admin-dark);
@@ -113,10 +110,9 @@
     color: #475569;
 }
 
-/* Form Section Styling (Right) */
 .login-admin-form-section {
     flex: 1;
-    background: #ffffff !important; /* Force white background */
+    background: #ffffff !important; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,7 +126,7 @@
 
 .login-admin-welcome-title {
     font-weight: 800 !important;
-    color: var(--login-admin-dark) !important; /* Force dark text */
+    color: var(--login-admin-dark) !important; 
     letter-spacing: -1px;
 }
 
@@ -139,7 +135,6 @@
     margin-bottom: 40px !important;
 }
 
-/* Labels & Inputs */
 .login-admin-label {
     display: block;
     font-size: 12px;
@@ -157,7 +152,7 @@
 }
 
 .login-admin-field .MuiInputBase-input {
-    color: var(--login-admin-dark) !important; /* Actual typing text color */
+    color: var(--login-admin-dark) !important; 
     font-weight: 500;
 }
 
@@ -170,7 +165,6 @@
     border-width: 2px !important;
 }
 
-/* Button */
 .login-admin-submit-btn {
     background: var(--login-admin-dark) !important;
     color: white !important;
@@ -207,7 +201,6 @@
     letter-spacing: 1px;
 }
 
-/* Responsive Fixes */
 @media (max-width: 950px) {
     .login-admin-main-card { width: 95%; flex-direction: column; height: auto; }
     .login-admin-sidebar { padding: 40px; }

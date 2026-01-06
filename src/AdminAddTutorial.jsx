@@ -43,7 +43,6 @@ function AdminAddTutorial() {
     const addStep = () => {
         const newSteps = [...steps, { stepNumber: steps.length + 1, instruction: '' }];
         setSteps(newSteps);
-        // Small animation for new step
         setTimeout(() => {
             gsap.from(`.step-card-${newSteps.length - 1}`, {
                 opacity: 0, scale: 0.9, duration: 0.3
@@ -73,7 +72,6 @@ function AdminAddTutorial() {
 
     return (
         <Box ref={containerRef} className="studio-container">
-            {/* --- HEADER SECTION --- */}
             <Box className="studio-header">
                 <Box>
                     <Typography variant="h4" className="studio-title">
@@ -116,7 +114,6 @@ function AdminAddTutorial() {
             )}
 
             <Grid container spacing={4}>
-                {/* --- LEFT: CONFIGURATION --- */}
                 <Grid item xs={12} md={4}>
                     <Stack spacing={3}>
                         <Paper className="config-card" elevation={0}>

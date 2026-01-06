@@ -26,7 +26,6 @@ function LayOut({ children }) {
     const location = useLocation();
     
     const [mode, setMode] = useState(localStorage.getItem('adminTheme') || 'light');
-    // State for Logout Dialog
     const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
 
     useEffect(() => {
@@ -64,12 +63,10 @@ function LayOut({ children }) {
         { text: 'User Directory', icon: <PeopleIcon />, path: '/admin-view-users' },
     ];
 
-    // Triggered when clicking logout in sidebar
     const handleLogoutClick = () => {
         setOpenLogoutDialog(true);
     };
 
-    // Actual Logout logic
     const handleConfirmLogout = () => {
         setOpenLogoutDialog(false);
         localStorage.removeItem('sarathiAdmin');
@@ -81,7 +78,6 @@ function LayOut({ children }) {
             <Box sx={{ display: 'flex', minHeight: '100vh' }}>
                 <CssBaseline />
                 
-                {/* --- TOP NAV BAR --- */}
                 <AppBar
                     position="fixed"
                     sx={{
@@ -94,7 +90,6 @@ function LayOut({ children }) {
                         borderBottom: `1px solid ${mode === 'light' ? '#e2e8f0' : '#334155'}`,
                     }}
                 >
-                    {/* ... (Existing Navbar Content) ... */}
                     <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>Pages /</Typography>
@@ -108,9 +103,7 @@ function LayOut({ children }) {
                                     {mode === 'light' ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
                                 </IconButton>
                             </Tooltip>
-                            <IconButton size="small">
-                                <Badge variant="dot" color="error"><NotificationIcon fontSize="small" /></Badge>
-                            </IconButton>
+                           
                             <Divider orientation="vertical" flexItem sx={{ mx: 1.5, my: 1.5 }} />
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                 <Box sx={{ textAlign: 'right', display: { xs: 'none', sm: 'block' } }}>
@@ -123,7 +116,6 @@ function LayOut({ children }) {
                     </Toolbar>
                 </AppBar>
 
-                {/* --- SIDEBAR MENU --- */}
                 <Drawer
                     sx={{
                         width: drawerWidth,
@@ -139,7 +131,6 @@ function LayOut({ children }) {
                     variant="permanent"
                     anchor="left"
                 >
-                    {/* ... (Existing Sidebar Logo & Navigation Content) ... */}
                     <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5 }}>
                         <Box sx={{ width: 32, height: 32, bgcolor: 'primary.main', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Typography sx={{ color: 'white', fontWeight: 900 }}>S</Typography>
@@ -180,12 +171,10 @@ function LayOut({ children }) {
                     </Box>
                 </Drawer>
 
-                {/* --- MAIN CONTENT AREA --- */}
                 <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', transition: 'background-color 0.3s ease', p: { xs: 2, md: 4 }, width: `calc(100% - ${drawerWidth}px)`, mt: '64px', minHeight: '100vh' }}>
                     <Box sx={{ maxWidth: '1400px', mx: 'auto' }}>{children}</Box>
                 </Box>
 
-                {/* --- LOGOUT CONFIRMATION DIALOG --- */}
                 <Dialog
                     open={openLogoutDialog}
                     onClose={() => setOpenLogoutDialog(false)}
