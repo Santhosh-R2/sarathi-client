@@ -3,11 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
     Container, TextField, Button, Typography, Box, 
     MenuItem, IconButton, Grid, Alert, Fade, CircularProgress,
-    Paper, Stack, InputBase, Tooltip, Breadcrumbs
+    Paper, Stack, InputBase, Tooltip
 } from '@mui/material';
 import { 
     Add, DeleteOutline, Save, ArrowBack, 
-    AutoAwesome, ListAlt, InfoOutlined, DragIndicator,
+    AutoAwesome, ListAlt, DragIndicator,
     HistoryEdu
 } from '@mui/icons-material';
 import { gsap } from 'gsap';
@@ -52,16 +52,34 @@ function AdminUpdateTutorial() {
 
     const categories = ["Smartphone", "Social Media", "Cyber Safety", "Govt Services"];
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if(status.msg) setStatus({ type: '', msg: '' });
+    };
 
     const handleStepChange = (index, value) => {
         const newSteps = [...steps];
         newSteps[index].instruction = value;
         setSteps(newSteps);
+        if(status.msg) setStatus({ type: '', msg: '' });
     };
 
     const addStep = () => {
-        setSteps([...steps, { stepNumber: steps.length + 1, instruction: '' }]);
+        const lastStep = steps[steps.length - 1];
+        
+        if (!lastStep.instruction.trim()) {
+            setStatus({ 
+                type: 'error', 
+                msg: `Please provide instructions for Step ${lastStep.stepNumber} before adding more.` 
+            });
+            gsap.to(`.admin-update-tutorials-step-card-${steps.length - 1}`, { 
+                x: 10, duration: 0.1, repeat: 3, yoyo: true 
+            });
+            return;
+        }
+
+        const newSteps = [...steps, { stepNumber: steps.length + 1, instruction: '' }];
+        setSteps(newSteps);
     };
 
     const removeStep = (index) => {
@@ -71,14 +89,27 @@ function AdminUpdateTutorial() {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
+
+        if (!formData.title.trim() || !formData.description.trim()) {
+            setStatus({ type: 'error', msg: 'Title and Description are required fields.' });
+            return;
+        }
+
+        const hasEmptyStep = steps.some(s => !s.instruction.trim());
+        if (hasEmptyStep) {
+            setStatus({ type: 'error', msg: 'Workflow steps cannot be empty. Please fill or remove them.' });
+            return;
+        }
+
         setUpdating(true);
         setStatus({ type: '', msg: '' });
+
         try {
             await axiosInstance.put(`tutorials/${id}`, { ...formData, steps });
             setStatus({ type: 'success', msg: 'Tutorial updated successfully!' });
             setTimeout(() => navigate('/admin-view-tutorials'), 1200);
         } catch (err) {
-            setStatus({ type: 'error', msg: 'Update failed. Check your connection.' });
+            setStatus({ type: 'error', msg: 'Update failed. Please check your connection.' });
         } finally {
             setUpdating(false);
         }
@@ -120,15 +151,19 @@ function AdminUpdateTutorial() {
 
             {status.msg && (
                 <Fade in={!!status.msg}>
-                    <Alert severity={status.type} variant="filled" sx={{ mb: 4, borderRadius: '12px' }}>
+                    <Alert 
+                        severity={status.type} 
+                        variant="filled" 
+                        sx={{ mb: 4, borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                    >
                         {status.msg}
                     </Alert>
                 </Fade>
             )}
 
-            <Grid container spacing={4} >
-                <Grid item xs={12} md={4} width={550}>
-                    <Stack spacing={3}>
+            <Grid container spacing={4}>
+                <Grid item xs={12} md={4}>
+                    <Stack spacing={3} width={550}>
                         <Paper className="admin-update-tutorials-config-card" elevation={0}>
                             <Box className="admin-update-tutorials-card-label">
                                 <HistoryEdu fontSize="small" /> Tutorial Details
@@ -176,15 +211,15 @@ function AdminUpdateTutorial() {
 
                         <Paper className="admin-update-tutorials-info-card" elevation={0}>
                             <AutoAwesome sx={{ color: '#6366f1', mb: 1 }} />
-                            <Typography variant="subtitle2" fontWeight="700">Editor Tip</Typography>
+                            <Typography variant="subtitle2" fontWeight="700">Editor Intelligence</Typography>
                             <Typography variant="caption" color="text.secondary">
-                                Ensure instructions are clear for senior citizens. Use simple language.
+                                Updates made here will be reflected immediately in the user app.
                             </Typography>
                         </Paper>
                     </Stack>
                 </Grid>
 
-                <Grid item xs={12} md={8} width={500}>
+                <Grid item xs={12} md={8} width={550}>
                     <Box className="admin-update-tutorials-builder-area">
                         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Typography variant="h6" fontWeight="800">
@@ -204,12 +239,19 @@ function AdminUpdateTutorial() {
                                         {index !== steps.length - 1 && <div className="admin-update-tutorials-step-line" />}
                                     </div>
                                     
-                                    <Paper className="admin-update-tutorials-step-card" elevation={0}>
+                                    <Paper 
+                                        className={`admin-update-tutorials-step-card admin-update-tutorials-step-card-${index}`} 
+                                        elevation={0}
+                                        sx={{ 
+                                            border: status.msg && !step.instruction.trim() ? '1px solid #ef4444' : '1px solid #cbd5e1' 
+                                        }}
+                                    >
                                         <Box display="flex" alignItems="flex-start" gap={2}>
                                             <DragIndicator className="admin-update-tutorials-drag-icon" />
                                             <InputBase
                                                 fullWidth
                                                 multiline
+                                                placeholder="Describe the user action..."
                                                 value={step.instruction}
                                                 onChange={(e) => handleStepChange(index, e.target.value)}
                                                 className="admin-update-tutorials-step-input"

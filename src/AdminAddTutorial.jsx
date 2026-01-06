@@ -1,27 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-    Container, TextField, Button, Typography, Box, 
-    MenuItem, IconButton, Grid, Alert, Fade, CircularProgress,
-    Paper, Stack, InputBase, Tooltip, useTheme
+    Box, TextField, Button, Typography, MenuItem, IconButton, 
+    Grid, Alert, Fade, CircularProgress, Paper, Stack, InputBase, Tooltip 
 } from '@mui/material';
 import { 
-    Add, DeleteOutline, Publish, AutoAwesome, 
-    RocketLaunch, ListAlt, Description, 
-    DragIndicator, InfoOutlined
+    Add, DeleteOutline, RocketLaunch, ListAlt, 
+    AutoAwesome, DragIndicator, InfoOutlined 
 } from '@mui/icons-material';
 import { gsap } from 'gsap';
 import axiosInstance from './baseUrl';
 import './AdminAddTutorial.css';
 
 function AdminAddTutorial() {
-    const theme = useTheme();
     const [formData, setFormData] = useState({ title: '', category: 'Smartphone', description: '' });
     const [steps, setSteps] = useState([{ stepNumber: 1, instruction: '' }]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ type: '', msg: '' });
 
     const containerRef = useRef(null);
-    const stepsRef = useRef([]);
 
     useEffect(() => {
         gsap.fromTo(containerRef.current, 
@@ -32,17 +28,34 @@ function AdminAddTutorial() {
 
     const categories = ["Smartphone", "Social Media", "Cyber Safety", "Govt Services"];
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if(status.msg) setStatus({ type: '', msg: '' }); // Clear error when typing
+    };
 
     const handleStepChange = (index, value) => {
         const newSteps = [...steps];
         newSteps[index].instruction = value;
         setSteps(newSteps);
+        if(status.msg) setStatus({ type: '', msg: '' }); 
     };
 
     const addStep = () => {
+        const lastStep = steps[steps.length - 1];
+        
+        if (!lastStep.instruction.trim()) {
+            setStatus({ 
+                type: 'error', 
+                msg: `Please fill in Step ${lastStep.stepNumber} before adding a new one.` 
+            });
+            
+            gsap.to(`.step-card-${steps.length - 1}`, { x: 10, duration: 0.1, repeat: 3, yoyo: true });
+            return;
+        }
+
         const newSteps = [...steps, { stepNumber: steps.length + 1, instruction: '' }];
         setSteps(newSteps);
+        
         setTimeout(() => {
             gsap.from(`.step-card-${newSteps.length - 1}`, {
                 opacity: 0, scale: 0.9, duration: 0.3
@@ -57,14 +70,31 @@ function AdminAddTutorial() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.title.trim() || !formData.description.trim()) {
+            setStatus({ type: 'error', msg: 'Please provide a Title and Learning Summary.' });
+            return;
+        }
+
+        const hasEmptyStep = steps.some(s => !s.instruction.trim());
+        if (hasEmptyStep) {
+            setStatus({ type: 'error', msg: 'One or more steps are empty. Please fill them or remove them.' });
+            return;
+        }
+
         setLoading(true);
         setStatus({ type: '', msg: '' });
+
         try {
             await axiosInstance.post('tutorials/add', { ...formData, steps });
             setStatus({ type: 'success', msg: 'Tutorial is now live in the library!' });
+            
+            setFormData({ title: '', category: 'Smartphone', description: '' });
+            setSteps([{ stepNumber: 1, instruction: '' }]);
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
-            setStatus({ type: 'error', msg: 'Failed to publish. Please check your connection.' });
+            setStatus({ type: 'error', msg: err.response?.data?.message || 'Server error. Please try again.' });
         } finally {
             setLoading(false);
         }
@@ -84,8 +114,8 @@ function AdminAddTutorial() {
                 <Stack direction="row" spacing={2}>
                     <Button 
                         variant="outlined" 
-                        sx={{ borderRadius: '12px', textTransform: 'none' }}
-                        onClick={() => window.location.reload()}
+                        className="discard-btn"
+                        onClick={() => window.confirm("Discard all changes?") && window.location.reload()}
                     >
                         Discard
                     </Button>
@@ -96,7 +126,7 @@ function AdminAddTutorial() {
                         disabled={loading}
                         startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <RocketLaunch />}
                     >
-                        Publish to Library
+                        {loading ? 'Processing...' : 'Publish to Library'}
                     </Button>
                 </Stack>
             </Box>
@@ -106,7 +136,8 @@ function AdminAddTutorial() {
                     <Alert 
                         severity={status.type} 
                         variant="filled"
-                        sx={{ mb: 4, borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                        className={`status-alert ${status.type}`}
+                        sx={{ mb: 4, borderRadius: '12px' }}
                     >
                         {status.msg}
                     </Alert>
@@ -115,7 +146,7 @@ function AdminAddTutorial() {
 
             <Grid container spacing={4}>
                 <Grid item xs={12} md={4}>
-                    <Stack spacing={3}>
+                    <Stack spacing={3} width={550}>
                         <Paper className="config-card" elevation={0}>
                             <Box className="card-label">
                                 <InfoOutlined fontSize="small" /> Basic Information
@@ -165,22 +196,22 @@ function AdminAddTutorial() {
 
                         <Paper className="info-tip-card" elevation={0}>
                             <AutoAwesome sx={{ color: '#6366f1', mb: 1 }} />
-                            <Typography variant="subtitle2" fontWeight="700">Pro Tip</Typography>
+                            <Typography variant="subtitle2" fontWeight="700">Editor Intelligence</Typography>
                             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                                Keep steps concise. Tutorials with 5-8 steps have the highest completion rate among senior users.
+                                Ensure each instruction describes only ONE action for better clarity.
                             </Typography>
                         </Paper>
                     </Stack>
                 </Grid>
 
-                <Grid item xs={12} md={8} width={500}>
-                    <Box className="builder-area">
+                <Grid item xs={12} md={8} width={550}>
+                    <Box className="builder-area" >
                         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Typography variant="h6" sx={{ fontWeight: 800, display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <ListAlt sx={{ color: 'primary.main' }} /> Workflow Builder
                             </Typography>
                             <Typography variant="caption" className="step-count-badge">
-                                {steps.length} {steps.length === 1 ? 'Step' : 'Steps'} Total
+                                {steps.length} Steps Active
                             </Typography>
                         </Box>
 
@@ -192,27 +223,31 @@ function AdminAddTutorial() {
                                         {index !== steps.length - 1 && <div className="step-line" />}
                                     </div>
                                     
-                                    <Paper className="step-card" elevation={0}>
+                                    <Paper 
+                                        className="step-card" 
+                                        elevation={0}
+                                        sx={{ 
+                                            border: status.msg && !step.instruction.trim() ? '1px solid #ef4444' : '1px solid rgba(0,0,0,0.08)' 
+                                        }}
+                                    >
                                         <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                                             <DragIndicator className="drag-handle" />
                                             <InputBase
                                                 fullWidth
                                                 multiline
-                                                placeholder={`What happens in step ${step.stepNumber}?`}
+                                                placeholder={`Instruction for step ${step.stepNumber}...`}
                                                 value={step.instruction}
                                                 onChange={(e) => handleStepChange(index, e.target.value)}
                                                 className="step-input-base"
                                             />
-                                            <Tooltip title="Remove Step">
-                                                <IconButton 
-                                                    size="small" 
-                                                    onClick={() => removeStep(index)} 
-                                                    className="delete-icon"
-                                                    disabled={steps.length === 1}
-                                                >
-                                                    <DeleteOutline fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <IconButton 
+                                                size="small" 
+                                                onClick={() => removeStep(index)} 
+                                                className="delete-icon"
+                                                disabled={steps.length === 1}
+                                            >
+                                                <DeleteOutline fontSize="small" />
+                                            </IconButton>
                                         </Box>
                                     </Paper>
                                 </Box>
