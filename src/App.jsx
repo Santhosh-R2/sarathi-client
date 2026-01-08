@@ -9,6 +9,8 @@ import ViewTutorial from './ViewTutorial';
 import AdminUpdateTutorial from './AdminUpdateTutorial';
 import ViewUsers from './ViewUsers';
 import AdminDashBoard from './AdminDashBoard';
+import AdminAddQuiz from './AdminAddQuiz';
+import AdminViewQuizzes from './AdminViewQuizzes';
 import React from 'react';
 
 const NavigationHandler = () => {
@@ -48,6 +50,8 @@ function App() {
         <Route path="/admin-update-tutorial/:id" element={<LayOut><AdminUpdateTutorial /></LayOut>} />
         <Route path="/admin-view-users" element={<LayOut><ViewUsers /></LayOut>} />
           <Route path="/admin-dashboard" element={<LayOut><AdminDashBoard /></LayOut>} />
+          <Route path="/admin-add-quiz" element={<LayOut><AdminAddQuiz /></LayOut>} />
+          <Route path="/admin-view-quizzes" element={<LayOut><AdminViewQuizzes /></LayOut>} />
       </Routes>
     </Router>
   );

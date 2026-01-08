@@ -16,7 +16,9 @@ import {
     NotificationsNoneOutlined as NotificationIcon,
     DarkModeOutlined as DarkModeIcon,
     LightModeOutlined as LightModeIcon,
-    WarningAmberRounded as WarningIcon
+    WarningAmberRounded as WarningIcon,
+    QuizOutlined as QuizIcon ,
+    VisibilityOutlined as ViewQuizIcon 
 } from '@mui/icons-material';
 
 const drawerWidth = 280;
@@ -59,6 +61,8 @@ function LayOut({ children }) {
     const menuItems = [
         { text: 'Overview', icon: <DashboardIcon />, path: '/admin-dashboard' },
         { text: 'Create Tutorial', icon: <AddIcon />, path: '/admin-add-tutorial' },
+        { text: 'Add Quiz', icon: <QuizIcon />, path: '/admin-add-quiz' },
+        { text: 'View Quizzes', icon: <ViewQuizIcon />, path: '/admin-view-quizzes' },
         { text: 'Manage Library', icon: <ViewIcon />, path: '/admin-view-tutorials' },
         { text: 'User Directory', icon: <PeopleIcon />, path: '/admin-view-users' },
     ];
