@@ -184,10 +184,10 @@ function ViewTutorial() {
                                     </Typography>
 
                                     <Box className="vt-card-actions">
-                                        <Typography className="vt-step-tag">
+                                        {/* <Typography className="vt-step-tag">
                                             <LibraryBooksOutlined sx={{ fontSize: 14 }} />
                                             {tut.steps?.length || 0} Steps
-                                        </Typography>
+                                        </Typography> */}
                                         
                                         <Box sx={{ display: 'flex', gap: 1 }}>
                                             <Tooltip title="Edit Content">

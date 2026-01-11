@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
+import axiosInstance from './baseUrl';
 function AiChat() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -13,19 +13,31 @@ function AiChat() {
 
   const user = JSON.parse(localStorage.getItem('sarathiUser')) || { _id: "guest", fullName: "User", language: "English" };
 
-  useEffect(() => {
+useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1. Fetch Suggestions (Tutorial Titles)
-        const tutRes = await axios.get('https://sarathi-ai-rust.vercel.app/api/tutorials');
+        // 1. Map the user's language string to an ISO code for the API
+        const langMap = {
+            "Malayalam": "ml",
+            "Tamil": "ta",
+            "Hindi": "hi",
+            "English": "en"
+        };
+        const langCode = langMap[user.language] || "en";
+
+        // 2. Fetch Tutorials with the language query parameter
+        // This will now return suggestions in the native language
+        const tutRes = await axiosInstance.get(`tutorials?lang=${langCode}`);
         setSuggestions(tutRes.data);
 
-        const historyRes = await axios.get(`https://sarathi-ai-rust.vercel.app/api/users/history/${user._id}`);
+        // 3. Fetch History
+        const historyRes = await axiosInstance.get(`users/history/${user._id}`);
+        
         if (historyRes.data.history && historyRes.data.history.length > 0) {
           const oldMessages = [];
           historyRes.data.history.reverse().forEach(chat => {
             oldMessages.push({ sender: 'user', text: chat.originalText });
-            oldMessages.push({ sender: 'ai', text: chat.translatedResponse }); // History usually comes back as joined string
+            oldMessages.push({ sender: 'ai', text: chat.translatedResponse });
           });
           setMessages(oldMessages);
         } else {
@@ -35,8 +47,9 @@ function AiChat() {
         console.error("Initialization Error:", err);
       }
     };
+    
     fetchData();
-  }, [user._id, user.fullName]);
+  }, [user._id, user.fullName, user.language]); // Added user.language to dependencies
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,7 +85,7 @@ function AiChat() {
   const clearHistory = async () => {
     if (window.confirm("Do you want to delete all chat history?")) {
       try {
-        await axios.delete(`https://sarathi-ai-rust.vercel.app/api/users/history/${user._id}`);
+        await axiosInstance.delete(`users/history/${user._id}`);
         setMessages([{ sender: 'ai', text: "History cleared. How can I help you now?" }]);
       } catch (err) {
         alert("Failed to clear history.");
@@ -85,7 +98,7 @@ function AiChat() {
     setMessages(prev => [...prev, { sender: 'user', text: text }]);
     setLoading(true);
     try {
-      const res = await axios.post('https://sarathi-ai-rust.vercel.app/api/users/voice-chat', {
+      const res = await axiosInstance.post('users/voice-chat', {
         userId: user._id,
         textInput: text
       });
@@ -104,7 +117,7 @@ function AiChat() {
   const sendVoiceToAI = async (base64Audio) => {
     setLoading(true);
     try {
-      const res = await axios.post('https://sarathi-ai-rust.vercel.app/api/users/voice-chat', {
+      const res = await axiosInstance.post('users/voice-chat', {
         userId: user._id,
         audioBase64: base64Audio
       });
