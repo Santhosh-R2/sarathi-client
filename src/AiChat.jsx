@@ -29,9 +29,10 @@ useEffect(() => {
         // This will now return suggestions in the native language
         const tutRes = await axiosInstance.get(`tutorials?lang=${langCode}`);
         setSuggestions(tutRes.data);
-
+console.log(tutRes)
         // 3. Fetch History
         const historyRes = await axiosInstance.get(`users/history/${user._id}`);
+        console.log(historyRes);
         
         if (historyRes.data.history && historyRes.data.history.length > 0) {
           const oldMessages = [];
@@ -121,6 +122,8 @@ useEffect(() => {
         userId: user._id,
         audioBase64: base64Audio
       });
+      console.log(res);
+      
       if (res.data.success) {
         setMessages(prev => [
             ...prev, 
