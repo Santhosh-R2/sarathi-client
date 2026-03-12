@@ -126,7 +126,7 @@ function AdminLogin() {
                                     <TextField
                                         fullWidth
                                         name="email"
-                                        placeholder="admin@sarathi.ai"
+                                        placeholder="Enter Email"
                                         value={formData.email}
                                         onChange={handleChange}
                                         className="login-admin-field"

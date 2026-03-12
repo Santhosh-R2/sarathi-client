@@ -2,60 +2,82 @@ import React, { useState, useEffect } from 'react';
 import { 
     Container, Typography, Box, Paper, Table, TableBody, 
     TableCell, TableContainer, TableHead, TableRow, 
-    Avatar, Chip, CircularProgress, IconButton, Tooltip, Stack
+    Avatar, Chip, CircularProgress, IconButton, Tooltip, Stack,
+    Switch, FormControlLabel
 } from '@mui/material';
 import { 
     PersonOutline, PhoneOutlined, EmailOutlined, 
-    CalendarMonthOutlined, SchoolOutlined, AutoAwesome,
-    ManageAccountsOutlined, DeleteOutline
+    AutoAwesome, VerifiedUserOutlined, BlockOutlined,
+    TrendingUpOutlined, Groups
 } from '@mui/icons-material';
 import { gsap } from 'gsap';
 import axiosInstance from './baseUrl';
 import './ViewUsers.css';
 
 const langColors = {
-    "Malayalam": { bg: "rgba(3, 105, 161, 0.15)", text: "#0369a1" },
-    "Tamil": { bg: "rgba(185, 28, 28, 0.15)", text: "#b91c1c" },
-    "Hindi": { bg: "rgba(21, 128, 61, 0.15)", text: "#15803d" },
-    "English": { bg: "rgba(109, 40, 217, 0.15)", text: "#6d28d9" },
-    "Default": { bg: "rgba(100, 116, 139, 0.15)", text: "#64748b" }
+    "Malayalam": { bg: "rgba(99, 102, 241, 0.1)", text: "#818cf8" },
+    "Tamil": { bg: "rgba(244, 63, 94, 0.1)", text: "#fb7185" },
+    "Hindi": { bg: "rgba(16, 185, 129, 0.1)", text: "#34d399" },
+    "English": { bg: "rgba(168, 85, 247, 0.1)", text: "#c084fc" },
+    "Default": { bg: "rgba(148, 163, 184, 0.1)", text: "#94a3b8" }
 };
 
 function ViewUsers() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const fetchUsers = async () => {
+        try {
+            const res = await axiosInstance.get('users');
+            setUsers(res.data);
+            setTimeout(() => {
+                gsap.fromTo(".admin-users-row", 
+                    { opacity: 0, scale: 0.95, y: 15 },
+                    { opacity: 1, scale: 1, y: 0, stagger: 0.08, duration: 0.6, ease: "power2.out" }
+                );
+            }, 100);
+        } catch (err) {
+            console.error("Failed to load users");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const res = await axiosInstance.get('users');
-                setUsers(res.data);
-                setTimeout(() => {
-                    gsap.fromTo(".admin-users-row", 
-                        { opacity: 0, y: 10 },
-                        { opacity: 1, y: 0, stagger: 0.05, duration: 0.4 }
-                    );
-                }, 100);
-            } catch (err) {
-                console.error("Failed to load users");
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchUsers();
     }, []);
 
-    const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-GB');
+    const handleToggleStatus = async (userId, currentStatus) => {
+        try {
+            const newStatus = !currentStatus;
+            
+            setUsers(prevUsers => 
+                prevUsers.map(user => 
+                    user._id === userId ? { ...user, isActive: newStatus } : user
+                )
+            );
 
-    const getLiteracyStyle = (level) => {
-        if (level?.includes('Senior')) return { color: '#f59e0b', label: 'Senior Mode' };
-        if (level?.includes('Beginner')) return { color: '#10b981', label: 'Beginner' };
-        return { color: '#6366f1', label: level || 'Standard' };
+            await axiosInstance.patch(`users/status/${userId}`, { isActive: newStatus });
+        } catch (err) {
+            console.error("Failed to toggle user status", err);
+            setUsers(prevUsers => 
+                prevUsers.map(user => 
+                    user._id === userId ? { ...user, isActive: currentStatus } : user
+                )
+            );
+        }
     };
+
+    const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric'
+    });
 
     if (loading) return (
         <Box className="admin-users-loader">
-            <CircularProgress size={50} thickness={5} sx={{ color: '#6366f1' }} />
+            <CircularProgress size={60} thickness={4} sx={{ color: '#6366f1' }} />
+            <Typography variant="h6" sx={{ mt: 3, fontWeight: 800, color: '#f8fafc', letterSpacing: 1 }}>
+                LOADING DIRECTORY
+            </Typography>
         </Box>
     );
 
@@ -64,15 +86,28 @@ function ViewUsers() {
             <Container maxWidth="xl">
                 <Box className="admin-users-header">
                     <Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                            <div className="admin-users-icon-square"><PersonOutline fontSize="small"/></div>
-                            <Typography variant="overline" className="admin-users-overline">Learner Insights</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
+                            <div className="admin-users-icon-square"><Groups fontSize="small"/></div>
+                            <Typography variant="overline" className="admin-users-overline">SYSTEM MANAGEMENT</Typography>
                         </Box>
-                        <Typography variant="h3" className="admin-users-title">User <span className="admin-users-indigo">Directory</span></Typography>
+                        <Typography variant="h2" className="admin-users-title">User <span className="admin-users-indigo">Ecosystem</span></Typography>
                     </Box>
-                    <Box className="admin-users-stats">
-                        <Typography variant="h4" fontWeight="900">{users.length}</Typography>
-                        <Typography variant="caption" fontWeight="700">TOTAL REGISTERED</Typography>
+                    <Box className="admin-users-stats-container">
+                        <Box className="admin-users-stat-card">
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                                <Groups sx={{ color: '#6366f1', fontSize: 28 }} />
+                                <TrendingUpOutlined sx={{ color: '#10b981', fontSize: 18 }} />
+                            </Box>
+                            <Typography className="stat-value">{users.length}</Typography>
+                            <Typography className="stat-label">Total Registered</Typography>
+                        </Box>
+                        <Box className="admin-users-stat-card active">
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+                                <VerifiedUserOutlined sx={{ color: '#10b981', fontSize: 28 }} />
+                            </Box>
+                            <Typography className="stat-value">{users.filter(u => u.isActive !== false).length}</Typography>
+                            <Typography className="stat-label">Active Now</Typography>
+                        </Box>
                     </Box>
                 </Box>
 
@@ -80,67 +115,74 @@ function ViewUsers() {
                     <Table>
                         <TableHead className="admin-users-table-head">
                             <TableRow>
-                                <TableCell className="admin-users-h-cell">Learner Profile</TableCell>
-                                <TableCell className="admin-users-h-cell">Contact Identity</TableCell>
-                                <TableCell className="admin-users-h-cell">Language</TableCell>
-                                <TableCell className="admin-users-h-cell">Literacy Level</TableCell>
-                                <TableCell className="admin-users-h-cell">Joined Date</TableCell>
+                                <TableCell className="admin-users-h-cell">Identity Profile</TableCell>
+                                <TableCell className="admin-users-h-cell">Communication</TableCell>
+                                <TableCell className="admin-users-h-cell">Market Preference</TableCell>
+                                <TableCell className="admin-users-h-cell">Registration</TableCell>
+                                <TableCell className="admin-users-h-cell" align="center">Access Control</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users.map((user) => {
-                                const litStyle = getLiteracyStyle(user.literacyLevel);
+                                const isActive = user.isActive !== false;
                                 return (
-                                    <TableRow key={user._id} className="admin-users-row">
+                                    <TableRow key={user._id} className={`admin-users-row ${!isActive ? 'row-inactive' : ''}`}>
                                         <TableCell>
-                                            <Stack direction="row" spacing={2} alignItems="center">
-                                                <Avatar className="admin-users-avatar">{user.fullName.charAt(0)}</Avatar>
+                                            <Stack direction="row" spacing={2.5} alignItems="center">
+                                                <div className="avatar-wrapper">
+                                                    <Avatar className={`admin-users-avatar ${!isActive ? 'avatar-disabled' : ''}`}>
+                                                        {user.fullName.charAt(0)}
+                                                    </Avatar>
+                                                    {isActive && <div className="online-indicator" />}
+                                                </div>
                                                 <Box>
-                                                    <Typography className="admin-users-name">{user.fullName}</Typography>
-                                                    <Typography variant="caption" className="admin-users-id-text">UID-{user._id.slice(-5).toUpperCase()}</Typography>
+                                                    <Typography className="admin-users-name">
+                                                        {user.fullName}
+                                                    </Typography>
+                                                    <Typography variant="caption" className="admin-users-id-text">
+                                                        ID: {user._id.slice(-8).toUpperCase()}
+                                                    </Typography>
                                                 </Box>
                                             </Stack>
                                         </TableCell>
                                         <TableCell>
-                                            <Box className="admin-users-contact-item"><PhoneOutlined sx={{ fontSize: 14 }} /> {user.mobile}</Box>
-                                            <Box className="admin-users-contact-item muted-text"><EmailOutlined sx={{ fontSize: 14 }} /> {user.email || 'N/A'}</Box>
+                                            <Box className="admin-users-contact-item"><PhoneOutlined sx={{ fontSize: 16 }} /> {user.mobile}</Box>
+                                            <Box className="admin-users-contact-item muted-info"><EmailOutlined sx={{ fontSize: 16 }} /> {user.email || 'no-email@sarathi.ai'}</Box>
                                         </TableCell>
                                         <TableCell>
                                             <Chip 
                                                 label={user.language || 'English'} 
                                                 size="small"
+                                                variant="outlined"
                                                 sx={{ 
-                                                    bgcolor: (langColors[user.language] || langColors.Default).bg,
+                                                    borderColor: (langColors[user.language] || langColors.Default).text,
                                                     color: (langColors[user.language] || langColors.Default).text,
-                                                    fontWeight: 800, borderRadius: '6px'
+                                                    background: (langColors[user.language] || langColors.Default).bg,
+                                                    fontWeight: 900, fontSize: '10px'
                                                 }}
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <Box className="literacy-cell">
-                                                <SchoolOutlined sx={{ fontSize: 16, color: litStyle.color, mr: 1 }} />
-                                                <Typography variant="body2" sx={{ fontWeight: 700, color: litStyle.color }}>
-                                                    {litStyle.label}
-                                                </Typography>
-                                            </Box>
-                                        </TableCell>
-                                        <TableCell>
                                             <Typography variant="body2" className="admin-users-date-text">{formatDate(user.createdAt)}</Typography>
                                         </TableCell>
-                                        {/* <TableCell align="right">
-                                            <Stack direction="row" spacing={1} justifyContent="flex-end">
-                                                <Tooltip title="Settings">
-                                                    <IconButton size="small" className="admin-users-action-btn view">
-                                                        <ManageAccountsOutlined fontSize="small" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title="Delete">
-                                                    <IconButton size="small" className="admin-users-action-btn delete">
-                                                        <DeleteOutline fontSize="small" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </Stack>
-                                        </TableCell> */}
+                                        <TableCell align="center">
+                                            <Box className="status-toggle-wrapper">
+                                                <Stack direction="row" spacing={1.5} alignItems="center" justifyContent="center">
+                                                    <Typography variant="caption" sx={{ 
+                                                        fontWeight: 900, 
+                                                        color: isActive ? '#10b981' : '#64748b',
+                                                        letterSpacing: 0.5
+                                                    }}>
+                                                        {isActive ? 'GRANTED' : 'REVOKED'}
+                                                    </Typography>
+                                                    <Switch 
+                                                        checked={isActive}
+                                                        onChange={() => handleToggleStatus(user._id, isActive)}
+                                                        className="custom-switch"
+                                                    />
+                                                </Stack>
+                                            </Box>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -152,4 +194,4 @@ function ViewUsers() {
     );
 }
 
-export default ViewUsers;
+export default ViewUsers;
