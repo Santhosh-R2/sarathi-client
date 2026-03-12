@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    Box, Grid, Paper, Typography, Container, 
-    CircularProgress, Card, CardContent, Avatar, Alert, Stack, Fade, useMediaQuery, useTheme 
+import {
+    Box, Grid, Paper, Typography, Container,
+    CircularProgress, Card, CardContent, Avatar, Alert, Stack, Fade, useMediaQuery, useTheme
 } from '@mui/material';
-import { 
-    PeopleAltOutlined, AutoStoriesOutlined, ForumOutlined, 
+import {
+    PeopleAltOutlined, AutoStoriesOutlined, ForumOutlined,
     LanguageOutlined, TrendingUpOutlined, InsightsOutlined
 } from '@mui/icons-material';
-import { 
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+import {
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
     ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from 'recharts';
 import { gsap } from 'gsap';
@@ -35,7 +35,7 @@ function AdminDashBoard() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-    
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -45,15 +45,15 @@ function AdminDashBoard() {
             try {
                 const res = await axiosInstance.get('users/stats');
                 setData(res.data);
-                
+
                 setTimeout(() => {
                     const tl = gsap.timeline();
-                    tl.fromTo(".admin-dash-kpi", 
-                        { opacity: 0, y: 30 }, 
+                    tl.fromTo(".admin-dash-kpi",
+                        { opacity: 0, y: 30 },
                         { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: "power3.out" }
                     );
-                    tl.fromTo(".admin-dash-chart-box", 
-                        { opacity: 0, scale: 0.98 }, 
+                    tl.fromTo(".admin-dash-chart-box",
+                        { opacity: 0, scale: 0.98 },
                         { opacity: 1, scale: 1, duration: 0.8, ease: "expo.out" }, "-=0.3"
                     );
                 }, 100);
@@ -82,7 +82,7 @@ function AdminDashBoard() {
     return (
         <Box className="admin-dash-viewport">
             <Container maxWidth="xl">
-                
+
                 <Box className="admin-dash-header">
                     <Box>
                         <Box className="admin-dash-badge">
@@ -135,31 +135,31 @@ function AdminDashBoard() {
                                     <AreaChart data={data?.growthData || []}>
                                         <defs>
                                             <linearGradient id="growthGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4}/>
-                                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
+                                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                        <XAxis 
-                                            dataKey="month" 
-                                            axisLine={false} 
-                                            tickLine={false} 
-                                            tick={{fill: '#94a3b8', fontSize: 11}} 
-                                            dy={10} 
+                                        <XAxis
+                                            dataKey="month"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: '#94a3b8', fontSize: 11 }}
+                                            dy={10}
                                         />
-                                        <YAxis 
-                                            axisLine={false} 
-                                            tickLine={false} 
-                                            tick={{fill: '#94a3b8', fontSize: 11}} 
+                                        <YAxis
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: '#94a3b8', fontSize: 11 }}
                                         />
                                         <Tooltip content={<CustomTooltip />} />
-                                        <Area 
-                                            type="monotone" 
-                                            dataKey="users" 
-                                            stroke="#6366f1" 
-                                            strokeWidth={4} 
-                                            fillOpacity={1} 
-                                            fill="url(#growthGradient)" 
+                                        <Area
+                                            type="monotone"
+                                            dataKey="users"
+                                            stroke="#6366f1"
+                                            strokeWidth={4}
+                                            fillOpacity={1}
+                                            fill="url(#growthGradient)"
                                             activeDot={{ r: 8, strokeWidth: 0 }}
                                         />
                                     </AreaChart>
@@ -191,13 +191,13 @@ function AdminDashBoard() {
                                                 <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                                             ))}
                                         </Pie>
-                                        <Tooltip 
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }} 
+                                        <Tooltip
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}
                                         />
                                         <Legend verticalAlign="bottom" height={36} iconType="circle" />
                                     </PieChart>
                                 </ResponsiveContainer>
-                                
+
                                 <Grid container spacing={1.5} sx={{ mt: 2 }}>
                                     {(data?.languageData || []).map((entry, i) => (
                                         <Grid item xs={6} sm={4} lg={6} key={i}>

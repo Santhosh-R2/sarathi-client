@@ -140,38 +140,45 @@
 .legend-item-v2 {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 12px;
-    background: rgba(248, 250, 252, 0.5);
-    border: 1px solid transparent;
-    transition: 0.2s;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(248, 250, 252, 0.4);
+    border: 1px solid rgba(226, 232, 240, 0.3);
+    transition: all 0.3s ease;
+    height: 100%;
 }
 
 [data-theme='dark'] .legend-item-v2 {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
 .legend-item-v2:hover {
     border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+    transform: translateY(-2px);
 }
 
 .legend-color-bar {
-    width: 3px;
-    height: 25px;
-    border-radius: 4px;
+    width: 4px;
+    height: 32px;
+    border-radius: 10px;
+    flex-shrink: 0;
 }
 
 .legend-name {
-    font-size: 11px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
     color: var(--mui-palette-text-primary);
+    line-height: 1.2 !important;
 }
 
 .legend-val {
-    font-size: 10px !important;
-    font-weight: 600 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
     color: var(--mui-palette-text-secondary);
+    opacity: 0.8;
 }
 
 .admin-dash-loader {
