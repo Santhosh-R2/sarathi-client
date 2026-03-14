@@ -30,7 +30,7 @@ function AdminAddTutorial() {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        if(status.msg) setStatus({ type: '', msg: '' }); // Clear error when typing
+        if(status.msg) setStatus({ type: '', msg: '' }); 
     };
 
     const handleStepChange = (index, value) => {

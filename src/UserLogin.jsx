@@ -79,7 +79,6 @@ function UserLogin() {
             position: 'relative',
             overflow: 'hidden'
         }}>
-            {/* Background Abstract Shapes */}
             <Box sx={{
                 position: 'absolute', top: '-10%', left: '-10%',
                 width: '600px', height: '600px',

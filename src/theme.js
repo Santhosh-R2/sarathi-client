@@ -1,28 +1,27 @@
 import { createTheme } from '@mui/material/styles';
 
-// Professional & Unique Color Palette
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
     primary: {
-      main: '#4f46e5', // Indigo 600
+      main: '#4f46e5', 
       light: '#818cf8',
       dark: '#3730a3',
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#0ea5e9', // Sky 500
+      main: '#0ea5e9', 
       light: '#38bdf8',
       dark: '#0284c7',
       contrastText: '#ffffff',
     },
     background: {
-      default: mode === 'light' ? '#f8fafc' : '#0f172a', // Slate 50 / Slate 900
-      paper: mode === 'light' ? '#ffffff' : '#1e293b', // White / Slate 800
+      default: mode === 'light' ? '#f8fafc' : '#0f172a', 
+      paper: mode === 'light' ? '#ffffff' : '#1e293b', 
     },
     text: {
-      primary: mode === 'light' ? '#1e293b' : '#f8fafc', // Slate 800 / Slate 50
-      secondary: mode === 'light' ? '#64748b' : '#94a3b8', // Slate 500 / Slate 400
+      primary: mode === 'light' ? '#1e293b' : '#f8fafc', 
+      secondary: mode === 'light' ? '#64748b' : '#94a3b8', 
     },
     error: {
       main: '#ef4444',

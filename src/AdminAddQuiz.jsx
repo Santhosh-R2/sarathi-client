@@ -61,7 +61,7 @@ function AdminAddQuiz() {
         const formattedQuestions = questions.map(q => ({
             questionText: q.questionText,
             options: q.options,
-            correctAnswer: q.options[q.correctAnswerIndex], // Pick string from index
+            correctAnswer: q.options[q.correctAnswerIndex],
             type: 'radio'
         }));
 
@@ -81,7 +81,6 @@ function AdminAddQuiz() {
         <Box className="quiz-canvas-viewport" ref={mainRef}>
             <Container maxWidth="md">
                 
-                {/* --- CANVAS HEADER --- */}
                 <Box className="quiz-canvas-header">
                     <Stack direction="row" alignItems="center" spacing={2}>
                         <div className="quiz-canvas-icon-wrap"><QuizRounded /></div>
@@ -107,7 +106,6 @@ function AdminAddQuiz() {
                     </Fade>
                 )}
 
-                {/* --- CONFIGURATION BLOCK --- */}
                 <Paper className="quiz-canvas-setup-card" elevation={0}>
                     <Stack spacing={3}>
                         <Box display="flex" alignItems="center" gap={1.5}>
@@ -128,7 +126,6 @@ function AdminAddQuiz() {
                     </Stack>
                 </Paper>
 
-                {/* --- QUESTION CANVAS --- */}
                 <Box className="quiz-canvas-questions">
                     {questions.map((q, qIdx) => (
                         <Paper key={qIdx} className="quiz-canvas-q-card" elevation={0}>

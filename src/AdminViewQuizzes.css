@@ -1,4 +1,3 @@
-/* Layout & Typography */
 .quiz-view-viewport { padding-bottom: 60px; }
 .quiz-view-header { margin-bottom: 40px; }
 .quiz-view-overline { font-weight: 800 !important; color: #6366f1 !important; letter-spacing: 1px !important; display: flex; align-items: center; }
@@ -6,7 +5,6 @@
 .text-indigo { color: #6366f1; }
 .quiz-view-section-label { text-transform: uppercase; font-weight: 800 !important; color: #94a3b8; font-size: 11px !important; letter-spacing: 1px; }
 
-/* Left List Styling */
 .quiz-list-item {
     display: flex;
     justify-content: space-between;
@@ -27,7 +25,6 @@
 .quiz-item-arrow { color: #cbd5e1; transition: 0.2s; }
 .quiz-list-item.active .quiz-item-arrow { color: #6366f1; transform: translateX(4px); }
 
-/* Right Section: Analytics */
 .quiz-stat-card {
     padding: 20px;
     border-radius: 20px !important;

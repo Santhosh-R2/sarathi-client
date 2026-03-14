@@ -135,7 +135,6 @@ function AdminViewQuizzes() {
                                         </Grid>
                                     </Grid>
 
-                                    {/* User Report Table */}
                                     <Typography variant="h6" fontWeight="800" sx={{ mb: 2 }}>Attended User Report</Typography>
                                     <TableContainer component={Paper} className="quiz-report-table" elevation={0}>
                                         {detailsLoading ? (

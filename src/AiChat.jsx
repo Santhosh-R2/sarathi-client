@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import axiosInstance from './baseUrl';
-// IMPORT THE PACKAGE
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 function AiChat() {
@@ -11,14 +10,11 @@ function AiChat() {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
   
-  // Ref to store text present before speaking started
   const baseTextRef = useRef('');
-  // Ref to track if the user clicked the "X" button (to prevent auto-send)
   const isCancelledRef = useRef(false);
 
   const user = JSON.parse(localStorage.getItem('sarathiUser')) || { _id: "guest", fullName: "User", language: "English" };
 
-  // Destructure values from the package hook
   const {
     transcript,
     listening,
@@ -27,7 +23,6 @@ function AiChat() {
     isMicrophoneAvailable
   } = useSpeechRecognition();
 
-  // --- 1. DATA LOADING ---
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,31 +50,23 @@ function AiChat() {
     fetchData();
   }, [user._id, user.fullName, user.language]);
 
-  // Scroll to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // --- 2. SYNC SPEECH TO INPUT ---
   useEffect(() => {
     if (transcript) {
-      // Combine base text + new speech
       const prefix = baseTextRef.current ? baseTextRef.current + ' ' : '';
       setInputText(prefix + transcript);
     }
   }, [transcript]);
 
-  // --- 3. AUTO-SEND LOGIC (NEW) ---
-  // This runs whenever the 'listening' state changes
   useEffect(() => {
-    // If recording just stopped AND it wasn't cancelled AND we have text...
     if (!listening && inputText.trim() && !isCancelledRef.current) {
-        // Wait a tiny bit to ensure transcript is fully merged, then send
         sendMessage(inputText);
     }
-  }, [listening]); // Only runs when start/stop happens
+  }, [listening]);
 
-  // --- 4. HANDLE CONTROLS ---
   const handleMicToggle = () => {
     if (!browserSupportsSpeechRecognition) {
       alert("Your browser doesn't support speech recognition.");
@@ -87,12 +74,10 @@ function AiChat() {
     }
 
     if (listening) {
-      // STOPPING -> This will trigger the useEffect above to Send
       SpeechRecognition.stopListening();
     } else {
-      // STARTING
-      isCancelledRef.current = false; // Reset cancel flag
-      baseTextRef.current = inputText; // Snapshot current text
+      isCancelledRef.current = false; 
+      baseTextRef.current = inputText; 
       resetTranscript();
       
       const langMap = { "Malayalam": "ml-IN", "Tamil": "ta-IN", "Hindi": "hi-IN", "English": "en-US" };
@@ -103,7 +88,6 @@ function AiChat() {
   };
 
   const handleCancel = () => {
-    // Mark as cancelled so the useEffect doesn't send it
     isCancelledRef.current = true;
     
     if (listening) {
@@ -128,9 +112,8 @@ function AiChat() {
   const sendMessage = async (text) => {
     if (!text || !text.trim()) return;
     
-    // Safety: ensure mic is stopped
     if (listening) {
-      isCancelledRef.current = true; // prevent double send loop
+      isCancelledRef.current = true; 
       SpeechRecognition.stopListening();
     }
 
@@ -156,7 +139,6 @@ function AiChat() {
     } finally { setLoading(false); }
   };
 
-  // --- STYLES ---
   const colors = { primary: '#2563EB', bg: '#F3F4F6', aiBubble: '#FFFFFF', userBubble: '#2563EB', text: '#1F2937', red: '#EF4444' };
 
   const styles = {
@@ -236,7 +218,6 @@ function AiChat() {
             value={inputText}
             onChange={(e) => {
               setInputText(e.target.value);
-              // Update baseText if user types manually to keep sync
               if(!listening) baseTextRef.current = e.target.value; 
             }}
           />
