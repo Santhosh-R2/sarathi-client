@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-    Box, TextField, Button, Typography,
-    InputAdornment, IconButton, Alert, CircularProgress, Fade, Stack
+import { 
+    Box, TextField, Button, Typography, 
+    InputAdornment, IconButton, Alert, CircularProgress, Fade, Stack 
 } from '@mui/material';
-import {
-    Visibility, VisibilityOff, Security,
+import { 
+    Visibility, VisibilityOff, Security, 
     ArrowForward, ShieldMoon, Fingerprint
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ function AdminLogin() {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
+    
     const navigate = useNavigate();
     const containerRef = useRef(null);
     const leftPanelRef = useRef(null);
@@ -26,20 +26,20 @@ function AdminLogin() {
 
     useEffect(() => {
         const tl = gsap.timeline();
-
-        tl.fromTo(containerRef.current,
-            { opacity: 0, scale: 0.98 },
+        
+        tl.fromTo(containerRef.current, 
+            { opacity: 0, scale: 0.98 }, 
             { opacity: 1, scale: 1, duration: 1, ease: "expo.out" }
         );
 
-        tl.fromTo(leftPanelRef.current,
-            { x: -30, opacity: 0 },
+        tl.fromTo(leftPanelRef.current, 
+            { x: -30, opacity: 0 }, 
             { x: 0, opacity: 1, duration: 0.8 }, "-=0.6"
         );
 
-        tl.fromTo(formItems.current,
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power2.out" },
+        tl.fromTo(formItems.current, 
+            { y: 20, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power2.out" }, 
             "-=0.4"
         );
     }, []);
@@ -73,7 +73,7 @@ function AdminLogin() {
             <div className="login-admin-accent-glow"></div>
 
             <Box className="login-admin-main-card" ref={containerRef}>
-                <Box className="login-admin-sidebar" ref={leftPanelRef}>
+                                <Box className="login-admin-sidebar" ref={leftPanelRef}>
                     <div className="login-admin-mesh-bg"></div>
                     <Box className="login-admin-sidebar-content">
                         <Box className="login-admin-logo-row">
@@ -136,7 +136,6 @@ function AdminLogin() {
 
                                 <div className="login-admin-input-group" ref={el => formItems.current[2] = el}>
                                     <label className="login-admin-label">Access Key</label>
-                                  // ... inside your return statement, replace the password TextField with this:
                                     <TextField
                                         fullWidth
                                         name="password"
@@ -147,17 +146,17 @@ function AdminLogin() {
                                         className="login-admin-field"
                                         variant="outlined"
                                         InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        onClick={() => setShowPassword(!showPassword)}
-                                                        edge="end"
-                                                        sx={{ color: '#64748b' }}
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
+                                             endAdornment: (
+            <InputAdornment position="end">
+                <IconButton 
+                    onClick={() => setShowPassword(!showPassword)} 
+                    edge="end"
+                    sx={{ color: '#64748b' }} // Added color for visibility
+                >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+            </InputAdornment>
+        )
                                         }}
                                     />
                                 </div>
